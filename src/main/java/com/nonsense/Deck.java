@@ -1,7 +1,8 @@
 package com.nonsense;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -11,35 +12,24 @@ class Deck {
     if (cards.size() < 3) {
       return Stream.empty();
     }
-    Iterable<Triple> it = () -> new Iterator<Triple>() {
-
-      int i = 0;
-      int j = 1;
-      int k = 2;
-
-      @Override
-      public boolean hasNext() {
-        return i >= 0;
-      }
-
-      @Override
-      public Triple next() {
-        Triple triple = Triple.get(cards.get(i), cards.get(j), cards.get(k));
-        if (k < cards.size() - 1) {
-          k++;
-        } else if (j < cards.size() - 2) {
-          j++;
-          k = j + 1;
-        } else if (i < cards.size() - 3) {
-          i++;
-          j = i + 1;
-          k = i + 2;
-        } else {
-          i = -1; // stop signal
-        }
-        return triple;
-      }
-    };
+    Iterable<Triple> it = () -> new TripleIterator(cards);
     return StreamSupport.stream(it.spliterator(), false);
+  }
+
+  static boolean isIndependent(List<Card> cards) {
+    return allTriples(cards).noneMatch(Triple::isSet);
+  }
+
+
+  static Optional<Card> expand(List<Card> cards) {
+    for (Card candidate : Card.allCards()) {
+      List<Card> newList = new ArrayList<>(cards.size() + 1);
+      newList.addAll(cards);
+      newList.add(candidate);
+      if (isIndependent(newList)) {
+        return Optional.of(candidate);
+      }
+    }
+    return Optional.empty();
   }
 }

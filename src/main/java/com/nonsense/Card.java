@@ -1,9 +1,6 @@
 package com.nonsense;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 class Card {
 
@@ -25,6 +22,34 @@ class Card {
       }
     }
     return m;
+  }
+
+  static Iterable<Card> allCards() {
+    Color[] colors = Color.values();
+    Shape[] shapes = Shape.values();
+    Shading[] shadings = Shading.values();
+    Number[] numbers = Number.values();
+    Iterator<Card> ir = new Iterator<Card>() {
+
+      int i;
+
+      @Override
+      public boolean hasNext() {
+        return i < 81;
+      }
+
+      @Override
+      public Card next() {
+        Color color = colors[i % 3];
+        Shape shape = shapes[(i / 3) % 3];
+        Shading shading = shadings[(i / 9) % 3];
+        Number number = numbers[(i / 27) % 3];
+        Card card = get(color, shape, shading, number);
+        i++;
+        return card;
+      }
+    };
+    return () -> ir;
   }
 
   final Color color;

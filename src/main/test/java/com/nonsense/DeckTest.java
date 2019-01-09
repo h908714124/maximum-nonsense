@@ -3,7 +3,7 @@ package com.nonsense;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.stream.StreamSupport;
+import java.util.Optional;
 
 import static com.nonsense.Card.*;
 import static com.nonsense.Shading.*;
@@ -157,26 +157,9 @@ public class DeckTest {
   }
 
   @Test
-  public void tse() {
-    StreamSupport.stream(Deck.allTriples(Arrays.asList(
-        green1(SQUIGGLES, SOLID),
+  public void testExpand() {
+    assertEquals(Optional.empty(), Deck.expand(Arrays.asList(green1(SQUIGGLES, SOLID),
         green2(SQUIGGLES, SOLID),
-        green3(SQUIGGLES, SOLID),
-        red1(SQUIGGLES, SOLID),
-        red2(SQUIGGLES, SOLID))).spliterator(), false)
-        .map(DeckTest::sig)
-        .forEach(System.out::println);
-
-  }
-
-  private static String sig(Card card) {
-    return "(" + card.color + "," + card.number + ")";
-  }
-
-  private static String sig(Triple triple) {
-    return "(" + sig(triple.getCard0()) +
-        "," + sig(triple.getCard1()) +
-        "," + sig(triple.getCard2()) +
-        ')';
+        green3(SQUIGGLES, SOLID))));
   }
 }
