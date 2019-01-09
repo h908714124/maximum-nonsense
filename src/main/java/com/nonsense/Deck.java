@@ -1,27 +1,45 @@
 package com.nonsense;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 class Deck {
 
-  static <E extends Enum<E>> boolean isEqualOrDistinct(
-      Enum<E> property0,
-      Enum<E> property1,
-      Enum<E> property2) {
-    if (property0 == property1) {
-      return property1 == property2;
+  static Stream<Triple> allTriples(List<Card> cards) {
+    if (cards.size() < 3) {
+      return Stream.empty();
     }
-    return property1 != property2 && property0 != property2;
-  }
+    Iterable<Triple> it = () -> new Iterator<Triple>() {
 
-  static boolean isSet(
-      Card card0,
-      Card card1,
-      Card card2) {
-    return isEqualOrDistinct(card0.color, card1.color, card2.color)
-        &&
-        isEqualOrDistinct(card0.shape, card1.shape, card2.shape)
-        &&
-        isEqualOrDistinct(card0.pattern, card1.pattern, card2.pattern)
-        &&
-        isEqualOrDistinct(card0.number, card1.number, card2.number);
+      int i = 0;
+      int j = 1;
+      int k = 2;
+
+      @Override
+      public boolean hasNext() {
+        return i >= 0;
+      }
+
+      @Override
+      public Triple next() {
+        Triple triple = Triple.get(cards.get(i), cards.get(j), cards.get(k));
+        if (k < cards.size() - 1) {
+          k++;
+        } else if (j < cards.size() - 2) {
+          j++;
+          k = j + 1;
+        } else if (i < cards.size() - 3) {
+          i++;
+          j = i + 1;
+          k = i + 2;
+        } else {
+          i = -1; // stop signal
+        }
+        return triple;
+      }
+    };
+    return StreamSupport.stream(it.spliterator(), false);
   }
 }

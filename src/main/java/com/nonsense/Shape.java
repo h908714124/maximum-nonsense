@@ -1,5 +1,5 @@
 package com.nonsense;
 
 enum Shape {
-  DIAMOND, PEANUT, ROD
+  OVALS, SQUIGGLES, DIAMONDS
 }
