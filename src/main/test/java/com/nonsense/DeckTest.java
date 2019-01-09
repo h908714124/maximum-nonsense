@@ -3,13 +3,13 @@ package com.nonsense;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.nonsense.Card.*;
 import static com.nonsense.Shading.*;
 import static com.nonsense.Shape.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DeckTest {
 
@@ -158,8 +158,27 @@ public class DeckTest {
 
   @Test
   public void testExpand() {
-    assertEquals(Optional.empty(), Deck.expand(Arrays.asList(green1(SQUIGGLES, SOLID),
+    assertEquals(Optional.empty(), Deck.expand(Arrays.asList(
+        green1(SQUIGGLES, SOLID),
         green2(SQUIGGLES, SOLID),
         green3(SQUIGGLES, SOLID))));
+  }
+
+  @Test
+  public void testExpandMore() {
+    List<Card> cards = Arrays.asList(
+        purple3(DIAMONDS, OUTLINED),
+        red2(SQUIGGLES, STRIPED),
+        red3(DIAMONDS, OUTLINED),
+        purple1(DIAMONDS, STRIPED),
+        purple1(DIAMONDS, OUTLINED),
+        purple2(OVALS, OUTLINED),
+        purple3(OVALS, OUTLINED),
+        red1(SQUIGGLES, SOLID),
+        green2(SQUIGGLES, OUTLINED),
+        purple1(SQUIGGLES, SOLID),
+        red2(OVALS, OUTLINED));
+    assertTrue(Deck.isIndependent(cards));
+    assertTrue(Deck.expand(cards).isPresent());
   }
 }

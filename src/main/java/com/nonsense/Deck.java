@@ -17,7 +17,8 @@ class Deck {
   }
 
   static boolean isIndependent(List<Card> cards) {
-    return allTriples(cards).noneMatch(Triple::isSet);
+    Optional<Triple> triple = allTriples(cards).filter(Triple::isSet).findFirst();
+    return !triple.isPresent();
   }
 
 
