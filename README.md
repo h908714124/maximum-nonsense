@@ -1,8 +1,8 @@
 ### [Set game](https://en.wikipedia.org/wiki/Set_(card_game))
 
-##### Mission: find large independent sets
+##### Mission: find a large set-free hand
 
-Current record: 19 cards
+Current record: 19 cards.
 
 Found by: `DeckTest.testFind19IndependentCards`
 
