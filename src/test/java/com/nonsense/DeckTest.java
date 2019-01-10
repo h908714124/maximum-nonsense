@@ -40,7 +40,6 @@ public class DeckTest {
         green3(SQUIGGLES, SOLID),
         red2(OVALS, STRIPED),
         purple1(DIAMONDS, OUTLINED)).isSet());
-
   }
 
   @Test
@@ -207,13 +206,12 @@ public class DeckTest {
   }
 
   @Test
-  public void testFind19IndependentCards() {
+  public void testFind18IndependentCards() {
     for (int i = 0; i < 10000; i++) {
-      List<Card> cards = Deck.randomIndependentCards(18);
+      List<Card> cards = Deck.randomIndependentCards(17);
       if (cards.isEmpty()) {
         continue;
       }
-      System.out.println(i);
       Optional<Card> extraCard = Deck.expand(cards);
       if (extraCard.isPresent()) {
         for (Card card : cards) {
@@ -226,7 +224,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testRecord() {
+  public void testRecord19() {
     List<Card> cards = Arrays.asList(
         get(RED, SQUIGGLES, STRIPED, ONE),
         get(RED, SQUIGGLES, OUTLINED, ONE),
@@ -248,6 +246,33 @@ public class DeckTest {
         get(GREEN, DIAMONDS, SOLID, THREE),
         get(GREEN, DIAMONDS, STRIPED, THREE));
     assertEquals(19, cards.size());
+    assertTrue(Deck.isIndependent(cards));
+  }
+
+  @Test
+  public void testRecord20() {
+    List<Card> cards = Arrays.asList(
+        get(RED, OVALS, STRIPED, ONE),
+        get(RED, OVALS, STRIPED, THREE),
+        get(PURPLE, SQUIGGLES, SOLID, ONE),
+        get(PURPLE, SQUIGGLES, OUTLINED, ONE),
+        get(PURPLE, SQUIGGLES, STRIPED, THREE),
+        get(PURPLE, OVALS, STRIPED, TWO),
+        get(PURPLE, OVALS, SOLID, THREE),
+        get(PURPLE, OVALS, OUTLINED, THREE),
+        get(PURPLE, DIAMONDS, SOLID, ONE),
+        get(PURPLE, DIAMONDS, OUTLINED, ONE),
+        get(PURPLE, DIAMONDS, STRIPED, THREE),
+        get(GREEN, SQUIGGLES, STRIPED, ONE),
+        get(GREEN, SQUIGGLES, SOLID, THREE),
+        get(GREEN, SQUIGGLES, OUTLINED, THREE),
+        get(GREEN, OVALS, SOLID, ONE),
+        get(GREEN, OVALS, OUTLINED, ONE),
+        get(GREEN, OVALS, STRIPED, TWO),
+        get(GREEN, DIAMONDS, STRIPED, ONE),
+        get(GREEN, DIAMONDS, SOLID, THREE),
+        get(GREEN, DIAMONDS, OUTLINED, THREE));
+    assertEquals(20, cards.size());
     assertTrue(Deck.isIndependent(cards));
   }
 }
