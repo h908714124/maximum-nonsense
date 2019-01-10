@@ -1,6 +1,11 @@
 package com.nonsense;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 class Card {
 
@@ -13,10 +18,10 @@ class Card {
       m.put(color, new EnumMap<>(Shape.class));
       for (Shape shape : Shape.values()) {
         m.get(color).put(shape, new EnumMap<>(Shading.class));
-        for (Shading pattern : Shading.values()) {
-          m.get(color).get(shape).put(pattern, new EnumMap<>(Number.class));
+        for (Shading shading : Shading.values()) {
+          m.get(color).get(shape).put(shading, new EnumMap<>(Number.class));
           for (Number number : Number.values()) {
-            m.get(color).get(shape).get(pattern).put(number, new Card(color, shape, pattern, number));
+            m.get(color).get(shape).get(shading).put(number, new Card(color, shape, shading, number));
           }
         }
       }
@@ -54,38 +59,55 @@ class Card {
 
   final Color color;
   final Shape shape;
-  final Shading pattern;
+  final Shading shading;
   final Number number;
 
   private Card(
       Color color,
       Shape shape,
-      Shading pattern,
+      Shading shading,
       Number number) {
     this.color = color;
     this.shape = shape;
-    this.pattern = pattern;
+    this.shading = shading;
     this.number = number;
   }
 
-  static Card get(Color color, Shape shape, Shading pattern, Number number) {
-    return CARDS.get(color).get(shape).get(pattern).get(number);
+  static Card get(Color color, Shape shape, Shading shading, Number number) {
+    return CARDS.get(color).get(shape).get(shading).get(number);
   }
 
-  static Card green1(Shape shape, Shading pattern) {
-    return get(Color.GREEN, shape, pattern, Number.ONE);
+  static Card randomCard() {
+    Color[] colors = Color.values();
+    Shape[] shapes = Shape.values();
+    Shading[] shadings = Shading.values();
+    Number[] numbers = Number.values();
+    ThreadLocalRandom r = ThreadLocalRandom.current();
+    int i = r.nextInt(3);
+    int j = r.nextInt(3);
+    int k = r.nextInt(3);
+    int l = r.nextInt(3);
+    Color color = colors[i];
+    Shape shape = shapes[j];
+    Shading shading = shadings[k];
+    Number number = numbers[l];
+    return get(color, shape, shading, number);
+  }
+
+  static Card green1(Shape shape, Shading shading) {
+    return get(Color.GREEN, shape, shading, Number.ONE);
   }
 
   static Card green2(Shape shape, Shading pattern) {
     return get(Color.GREEN, shape, pattern, Number.TWO);
   }
 
-  static Card green3(Shape shape, Shading pattern) {
-    return get(Color.GREEN, shape, pattern, Number.THREE);
+  static Card green3(Shape shape, Shading shading) {
+    return get(Color.GREEN, shape, shading, Number.THREE);
   }
 
-  static Card red1(Shape shape, Shading pattern) {
-    return get(Color.RED, shape, pattern, Number.ONE);
+  static Card red1(Shape shape, Shading shading) {
+    return get(Color.RED, shape, shading, Number.ONE);
   }
 
   static Card red2(Shape shape, Shading pattern) {
@@ -113,7 +135,7 @@ class Card {
     return "(" +
         color +
         "," + shape +
-        "," + pattern +
+        "," + shading +
         "," + number +
         ')';
   }
@@ -125,12 +147,12 @@ class Card {
     Card card = (Card) o;
     return color == card.color &&
         shape == card.shape &&
-        pattern == card.pattern &&
+        shading == card.shading &&
         number == card.number;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(color, shape, pattern, number);
+    return Objects.hash(color, shape, shading, number);
   }
 }

@@ -179,6 +179,9 @@ public class DeckTest {
         purple1(SQUIGGLES, SOLID),
         red2(OVALS, OUTLINED));
     assertTrue(Deck.isIndependent(cards));
-    assertTrue(Deck.expand(cards).isPresent());
+    Optional<Card> extraCard = Deck.expand(cards);
+    assertTrue(extraCard.isPresent());
+    assertTrue(Deck.isIndependent(cards, extraCard.get()));
+    assertFalse(Deck.isIndependent(cards, purple3(SQUIGGLES, STRIPED)));
   }
 }

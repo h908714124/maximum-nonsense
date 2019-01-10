@@ -1,5 +1,7 @@
 package com.nonsense;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -7,13 +9,14 @@ class TripleIterator implements Iterator<Triple> {
 
   private final List<Card> cards;
 
-  int i, j, k;
+  int i = 0, j = 1, k = 2;
 
   TripleIterator(List<Card> cards) {
     this.cards = cards;
-    i = 0;
-    j = 1;
-    k = 2;
+  }
+
+  TripleIterator(Collection<Card> cards) {
+    this(new ArrayList<>(cards));
   }
 
   @Override

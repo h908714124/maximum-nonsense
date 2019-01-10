@@ -20,7 +20,7 @@ class Triple {
     return INSTANCE;
   }
 
-  private static <E extends Enum<E>> boolean isEqualOrDistinct(
+  static <E extends Enum<E>> boolean isEqualOrDistinct(
       Enum<E> property0,
       Enum<E> property1,
       Enum<E> property2) {
@@ -35,7 +35,7 @@ class Triple {
         &&
         isEqualOrDistinct(card0.shape, card1.shape, card2.shape)
         &&
-        isEqualOrDistinct(card0.pattern, card1.pattern, card2.pattern)
+        isEqualOrDistinct(card0.shading, card1.shading, card2.shading)
         &&
         isEqualOrDistinct(card0.number, card1.number, card2.number);
   }
