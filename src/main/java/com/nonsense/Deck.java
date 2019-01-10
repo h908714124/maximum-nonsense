@@ -1,6 +1,8 @@
 package com.nonsense;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +41,9 @@ class Deck {
 
   static Optional<Card> expand(List<Card> cards) {
     for (Card candidate : Card.allCards()) {
+      if (cards.contains(candidate)) {
+        continue;
+      }
       if (isIndependent(cards, candidate)) {
         return Optional.of(candidate);
       }
@@ -54,13 +59,21 @@ class Deck {
     return cards;
   }
 
-  static Set<Card> randomIndependentCards(int n) {
-    Set<Card> cards = new HashSet<>(n);
-    while (cards.size() < n) {
+  static List<Card> randomIndependentCards(int n) {
+    List<Card> cards = new ArrayList<>(n);
+    int breaker = 1000000;
+    while (breaker > 0 && cards.size() < n) {
+      breaker--;
       Card card = Card.randomCard();
-      if (!cards.contains(card)) {
+      if (cards.contains(card)) {
+        continue;
+      }
+      if (isIndependent(cards, card)) {
         cards.add(card);
       }
+    }
+    if (cards.size() < n) {
+      return Collections.emptyList();
     }
     return cards;
   }
