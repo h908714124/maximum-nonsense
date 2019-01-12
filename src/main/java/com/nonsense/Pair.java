@@ -1,42 +1,48 @@
 package com.nonsense;
 
-import static com.nonsense.Triple.isEqualOrDistinct;
+import java.util.Arrays;
 
-class Pair {
+import static com.nonsense.Card.allCards;
 
-  private static final Pair INSTANCE = new Pair();
+final class Pair {
 
-  private Pair() {
+  private static final Pair[][] PAIRS = allPairs();
+
+  private static Pair[][] allPairs() {
+    Pair[][] result = new Pair[81][];
+    int i = 0;
+    for (Card card : allCards()) {
+      result[card.ordinal] = new Pair[81];
+      for (Card card2 : allCards()) {
+        result[card.ordinal][card2.ordinal] = new Pair(card, card2, i++);
+      }
+    }
+    return result;
   }
 
-  private Card card0;
+  private Pair(Card card0, Card card1, int ordinal) {
+    this.card0 = card0;
+    this.card1 = card1;
+    this.ordinal = ordinal;
+  }
 
-  private Card card1;
+  final Card card0;
+
+  final Card card1;
+
+  final int ordinal;
+
+  static Pair[][] getAllPairs() {
+    return PAIRS;
+  }
 
   static Pair get(Card card0, Card card1) {
-    INSTANCE.card0 = card0;
-    INSTANCE.card1 = card1;
-    return INSTANCE;
-  }
-
-  Card getCard0() {
-    return card0;
-  }
-
-  Card getCard1() {
-    return card1;
+    return PAIRS[card0.ordinal][card1.ordinal];
   }
 
   boolean isSet(Card extraCard) {
-    return isEqualOrDistinct(card0.color, card1.color, extraCard.color)
-        &&
-        isEqualOrDistinct(card0.shape, card1.shape, extraCard.shape)
-        &&
-        isEqualOrDistinct(card0.shading, card1.shading, extraCard.shading)
-        &&
-        isEqualOrDistinct(card0.number, card1.number, extraCard.number);
+    return Triple.isSet(card0, card1, extraCard);
   }
-
 
   @Override
   public String toString() {

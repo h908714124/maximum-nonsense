@@ -1,26 +1,40 @@
 package com.nonsense;
 
-class Triple {
+import static com.nonsense.Card.allCards;
 
-  private static final Triple INSTANCE = new Triple();
+final class Triple {
 
-  private Triple() {
+  private static final Triple[][] TRIPLES = allTriples();
+
+  private static Triple[][] allTriples() {
+    Triple[][] triples = new Triple[81 * 81][];
+    Pair[][] pairs = Pair.getAllPairs();
+    for (Pair[] column : pairs) {
+      for (Pair pair : column) {
+        triples[pair.ordinal] = new Triple[81];
+        for (Card card : allCards()) {
+          triples[pair.ordinal][card.ordinal] = new Triple(pair, card);
+        }
+      }
+    }
+    return triples;
   }
 
-  private Card card0;
+  private Triple(Pair pair, Card card) {
+    this.pair = pair;
+    this.card = card;
+  }
 
-  private Card card1;
+  private final Pair pair;
 
-  private Card card2;
+  private final Card card;
 
   static Triple get(Card card0, Card card1, Card card2) {
-    INSTANCE.card0 = card0;
-    INSTANCE.card1 = card1;
-    INSTANCE.card2 = card2;
-    return INSTANCE;
+    Pair pair = Pair.get(card0, card1);
+    return TRIPLES[pair.ordinal][card2.ordinal];
   }
 
-  static <E extends Enum<E>> boolean isEqualOrDistinct(
+  private static <E extends Enum<E>> boolean isEqualOrDistinct(
       Enum<E> property0,
       Enum<E> property1,
       Enum<E> property2) {
@@ -30,7 +44,7 @@ class Triple {
     return property1 != property2 && property0 != property2;
   }
 
-  boolean isSet() {
+  static boolean isSet(Card card0, Card card1, Card card2) {
     return isEqualOrDistinct(card0.color, card1.color, card2.color)
         &&
         isEqualOrDistinct(card0.shape, card1.shape, card2.shape)
@@ -40,24 +54,16 @@ class Triple {
         isEqualOrDistinct(card0.number, card1.number, card2.number);
   }
 
-  Card getCard0() {
-    return card0;
+  boolean isSet() {
+    return isSet(pair.card0, pair.card1, card);
   }
-
-  Card getCard1() {
-    return card1;
-  }
-
-  Card getCard2() {
-    return card2;
-  }
-
+  
   @Override
   public String toString() {
     return "(" +
-        card0 +
-        "," + card1 +
-        "," + card2 +
+        pair.card0 +
+        "," + pair.card1 +
+        "," + card +
         ')';
   }
 }

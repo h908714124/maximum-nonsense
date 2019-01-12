@@ -6,31 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.nonsense.Card.get;
-import static com.nonsense.Card.green1;
-import static com.nonsense.Card.green2;
-import static com.nonsense.Card.green3;
-import static com.nonsense.Card.purple1;
-import static com.nonsense.Card.purple2;
-import static com.nonsense.Card.purple3;
-import static com.nonsense.Card.red1;
-import static com.nonsense.Card.red2;
-import static com.nonsense.Card.red3;
-import static com.nonsense.Color.GREEN;
-import static com.nonsense.Color.PURPLE;
-import static com.nonsense.Color.RED;
-import static com.nonsense.Number.ONE;
-import static com.nonsense.Number.THREE;
-import static com.nonsense.Number.TWO;
-import static com.nonsense.Shading.OUTLINED;
-import static com.nonsense.Shading.SOLID;
-import static com.nonsense.Shading.STRIPED;
-import static com.nonsense.Shape.DIAMONDS;
-import static com.nonsense.Shape.OVALS;
-import static com.nonsense.Shape.SQUIGGLES;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static com.nonsense.Card.*;
+import static com.nonsense.Color.*;
+import static com.nonsense.Number.*;
+import static com.nonsense.Shading.*;
+import static com.nonsense.Shape.*;
+import static org.junit.Assert.*;
 
 public class DeckTest {
 
@@ -174,14 +155,6 @@ public class DeckTest {
         red1(DIAMONDS, SOLID),
         red2(DIAMONDS, SOLID),
         red3(DIAMONDS, SOLID))).count());
-  }
-
-  @Test
-  public void testExpand() {
-    assertEquals(Optional.empty(), Deck.expand(Arrays.asList(
-        green1(SQUIGGLES, SOLID),
-        green2(SQUIGGLES, SOLID),
-        green3(SQUIGGLES, SOLID))));
   }
 
   @Test

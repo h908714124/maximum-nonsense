@@ -1,12 +1,6 @@
 package com.nonsense;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -29,8 +23,16 @@ class Deck {
   }
 
   static boolean isIndependent(Collection<Card> cards) {
-    Optional<Triple> set = allTriples(cards).filter(Triple::isSet).findFirst();
-    return !set.isPresent();
+    Iterator<Card> it = cards.iterator();
+    if (!it.hasNext()) {
+      return true;
+    }
+    Card first = it.next();
+    List<Card> rest = new ArrayList<>(cards.size() - 1);
+    while (it.hasNext()) {
+      rest.add(it.next());
+    }
+    return isIndependent(rest, first);
   }
 
   static boolean isIndependent(Collection<Card> cards, Card extraCard) {

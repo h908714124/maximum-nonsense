@@ -1,18 +1,15 @@
 package com.nonsense;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-class Card {
+final class Card {
 
   private static final Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>> CARDS =
       Collections.unmodifiableMap(createAllCards());
 
   private static Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>> createAllCards() {
+    int i = 0;
     Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>> m = new EnumMap<>(Color.class);
     for (Color color : Color.values()) {
       m.put(color, new EnumMap<>(Shape.class));
@@ -21,7 +18,7 @@ class Card {
         for (Shading shading : Shading.values()) {
           m.get(color).get(shape).put(shading, new EnumMap<>(Number.class));
           for (Number number : Number.values()) {
-            m.get(color).get(shape).get(shading).put(number, new Card(color, shape, shading, number));
+            m.get(color).get(shape).get(shading).put(number, new Card(i++, color, shape, shading, number));
           }
         }
       }
@@ -57,16 +54,19 @@ class Card {
     return () -> ir;
   }
 
+  final int ordinal;
   final Color color;
   final Shape shape;
   final Shading shading;
   final Number number;
 
   private Card(
+      int ordinal,
       Color color,
       Shape shape,
       Shading shading,
       Number number) {
+    this.ordinal = ordinal;
     this.color = color;
     this.shape = shape;
     this.shading = shading;
@@ -145,14 +145,11 @@ class Card {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Card card = (Card) o;
-    return color == card.color &&
-        shape == card.shape &&
-        shading == card.shading &&
-        number == card.number;
+    return ordinal == card.ordinal;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(color, shape, shading, number);
+    return Objects.hash(ordinal);
   }
 }
