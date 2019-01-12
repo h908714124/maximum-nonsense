@@ -1,7 +1,5 @@
 package com.nonsense;
 
-import java.util.Arrays;
-
 import static com.nonsense.Card.allCards;
 
 final class Pair {
