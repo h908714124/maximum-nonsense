@@ -6,12 +6,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.nonsense.Card.*;
-import static com.nonsense.Color.*;
-import static com.nonsense.Number.*;
-import static com.nonsense.Shading.*;
-import static com.nonsense.Shape.*;
-import static org.junit.Assert.*;
+import static com.nonsense.Card.get;
+import static com.nonsense.Card.green1;
+import static com.nonsense.Card.green2;
+import static com.nonsense.Card.green3;
+import static com.nonsense.Card.purple1;
+import static com.nonsense.Card.purple2;
+import static com.nonsense.Card.purple3;
+import static com.nonsense.Card.red1;
+import static com.nonsense.Card.red2;
+import static com.nonsense.Card.red3;
+import static com.nonsense.Color.GREEN;
+import static com.nonsense.Color.PURPLE;
+import static com.nonsense.Color.RED;
+import static com.nonsense.Number.ONE;
+import static com.nonsense.Number.THREE;
+import static com.nonsense.Number.TWO;
+import static com.nonsense.Shading.OUTLINED;
+import static com.nonsense.Shading.SOLID;
+import static com.nonsense.Shading.STRIPED;
+import static com.nonsense.Shape.DIAMONDS;
+import static com.nonsense.Shape.OVALS;
+import static com.nonsense.Shape.SQUIGGLES;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DeckTest {
 
@@ -247,5 +266,24 @@ public class DeckTest {
         get(GREEN, DIAMONDS, OUTLINED, THREE));
     assertEquals(20, cards.size());
     assertTrue(Deck.isIndependent(cards));
+  }
+
+  @Test
+  public void testAllCardsSorted() {
+    int[] previous = new int[]{-1};
+    Card.allCards().forEach(card -> {
+      assertTrue(card.ordinal > previous[0]);
+      previous[0] = card.ordinal;
+    });
+  }
+
+  @Test
+  public void testAllPairsSorted() {
+    int[] previous = new int[]{-1};
+    Pair.getAllPairs().forEach(pair -> {
+      assertTrue(pair.ordinal > previous[0]);
+      previous[0] = pair.ordinal;
+    });
+    assertEquals(3240, Pair.getAllPairs().count());
   }
 }

@@ -1,15 +1,24 @@
 package com.nonsense;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 final class Card {
 
-  private static final Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>> CARDS =
-      Collections.unmodifiableMap(createAllCards());
+  private static final Map.Entry<Card[], Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>>> ENTRY =
+      createAllCards();
 
-  private static Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>> createAllCards() {
+  private static final Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>> CARDS = ENTRY.getValue();
+
+  private static final Card[] BY_ORDINAL = ENTRY.getKey();
+
+  private static Map.Entry<Card[], Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>>> createAllCards() {
     int i = 0;
+    Card[] byOrdinal = new Card[81];
     Map<Color, Map<Shape, Map<Shading, Map<Number, Card>>>> m = new EnumMap<>(Color.class);
     for (Color color : Color.values()) {
       m.put(color, new EnumMap<>(Shape.class));
@@ -18,19 +27,18 @@ final class Card {
         for (Shading shading : Shading.values()) {
           m.get(color).get(shape).put(shading, new EnumMap<>(Number.class));
           for (Number number : Number.values()) {
-            m.get(color).get(shape).get(shading).put(number, new Card(i++, color, shape, shading, number));
+            Card card = new Card(i, color, shape, shading, number);
+            m.get(color).get(shape).get(shading).put(number, card);
+            byOrdinal[i] = card;
+            i++;
           }
         }
       }
     }
-    return m;
+    return new AbstractMap.SimpleImmutableEntry<>(byOrdinal, m);
   }
 
   static Iterable<Card> allCards() {
-    Color[] colors = Color.values();
-    Shape[] shapes = Shape.values();
-    Shading[] shadings = Shading.values();
-    Number[] numbers = Number.values();
     Iterator<Card> ir = new Iterator<Card>() {
 
       int i;
@@ -42,11 +50,7 @@ final class Card {
 
       @Override
       public Card next() {
-        Color color = colors[i % 3];
-        Shape shape = shapes[(i / 3) % 3];
-        Shading shading = shadings[(i / 9) % 3];
-        Number number = numbers[(i / 27) % 3];
-        Card card = get(color, shape, shading, number);
+        Card card = BY_ORDINAL[i];
         i++;
         return card;
       }
