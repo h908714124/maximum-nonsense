@@ -1,5 +1,7 @@
 package com.nonsense;
 
+import java.util.stream.Stream;
+
 import static com.nonsense.Card.allCards;
 
 final class Triple {
@@ -8,15 +10,13 @@ final class Triple {
 
   private static Triple[][] allTriples() {
     Triple[][] triples = new Triple[81 * 81][];
-    Pair[][] pairs = Pair.getAllPairs();
-    for (Pair[] column : pairs) {
-      for (Pair pair : column) {
-        triples[pair.ordinal] = new Triple[81];
-        for (Card card : allCards()) {
-          triples[pair.ordinal][card.ordinal] = new Triple(pair, card);
-        }
+    Stream<Pair> pairs = Pair.getAllPairs();
+    pairs.forEach(pair -> {
+      triples[pair.ordinal] = new Triple[81];
+      for (Card card : allCards()) {
+        triples[pair.ordinal][card.ordinal] = new Triple(pair, card);
       }
-    }
+    });
     return triples;
   }
 
@@ -57,7 +57,7 @@ final class Triple {
   boolean isSet() {
     return isSet(pair.card0, pair.card1, card);
   }
-  
+
   @Override
   public String toString() {
     return "(" +

@@ -1,5 +1,9 @@
 package com.nonsense;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 import static com.nonsense.Card.allCards;
 
 final class Pair {
@@ -12,7 +16,9 @@ final class Pair {
     for (Card card : allCards()) {
       result[card.ordinal] = new Pair[81];
       for (Card card2 : allCards()) {
-        result[card.ordinal][card2.ordinal] = new Pair(card, card2, i++);
+        if (card2.ordinal > card.ordinal) {
+          result[card.ordinal][card2.ordinal] = new Pair(card, card2, i++);
+        }
       }
     }
     return result;
@@ -30,12 +36,39 @@ final class Pair {
 
   final int ordinal;
 
-  static Pair[][] getAllPairs() {
-    return PAIRS;
+  static Stream<Pair> getAllPairs() {
+    Iterator<Pair> ito = new Iterator<Pair>() {
+      int i = 0, j = 1;
+
+      @Override
+      public boolean hasNext() {
+        return i >= 0;
+      }
+
+      @Override
+      public Pair next() {
+        Pair pair = PAIRS[i][j];
+        if (j < 80) {
+          j++;
+        } else if (i < 79) {
+          i++;
+          j = i + 1;
+        } else {
+          i = -1; // stop signal
+        }
+        return pair;
+      }
+    };
+    Iterable<Pair> it = () -> ito;
+    return StreamSupport.stream(it.spliterator(), false);
   }
 
   static Pair get(Card card0, Card card1) {
-    return PAIRS[card0.ordinal][card1.ordinal];
+    if (card1.ordinal > card0.ordinal) {
+      return PAIRS[card0.ordinal][card1.ordinal];
+    } else {
+      return PAIRS[card1.ordinal][card0.ordinal];
+    }
   }
 
   boolean isSet(Card extraCard) {
