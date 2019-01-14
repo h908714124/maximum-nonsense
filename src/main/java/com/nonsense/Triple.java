@@ -14,7 +14,7 @@ final class Triple {
     pairs.forEach(pair -> {
       triples[pair.ordinal] = new Triple[81];
       for (Card card : allCards()) {
-        triples[pair.ordinal][card.ordinal] = new Triple(pair, card);
+        triples[pair.ordinal][card.ordinal()] = new Triple(pair, card);
       }
     });
     return triples;
@@ -31,7 +31,7 @@ final class Triple {
 
   static Triple get(Card card0, Card card1, Card card2) {
     Pair pair = Pair.get(card0, card1);
-    return TRIPLES[pair.ordinal][card2.ordinal];
+    return TRIPLES[pair.ordinal][card2.ordinal()];
   }
 
   private static <E extends Enum<E>> boolean isEqualOrDistinct(

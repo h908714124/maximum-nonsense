@@ -272,8 +272,8 @@ public class DeckTest {
   public void testAllCardsSorted() {
     int[] previous = new int[]{-1};
     Card.allCards().forEach(card -> {
-      assertTrue(card.ordinal > previous[0]);
-      previous[0] = card.ordinal;
+      assertTrue(card.ordinal() > previous[0]);
+      previous[0] = card.ordinal();
     });
   }
 

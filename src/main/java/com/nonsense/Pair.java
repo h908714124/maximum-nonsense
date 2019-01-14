@@ -14,10 +14,10 @@ final class Pair {
     Pair[][] result = new Pair[81][];
     int i = 0;
     for (Card card : allCards()) {
-      result[card.ordinal] = new Pair[81];
+      result[card.ordinal()] = new Pair[81];
       for (Card card2 : allCards()) {
-        if (card2.ordinal > card.ordinal) {
-          result[card.ordinal][card2.ordinal] = new Pair(card, card2, i++);
+        if (card2.ordinal() > card.ordinal()) {
+          result[card.ordinal()][card2.ordinal()] = new Pair(card, card2, i++);
         }
       }
     }
@@ -64,10 +64,10 @@ final class Pair {
   }
 
   static Pair get(Card card0, Card card1) {
-    if (card1.ordinal > card0.ordinal) {
-      return PAIRS[card0.ordinal][card1.ordinal];
+    if (card1.ordinal() > card0.ordinal()) {
+      return PAIRS[card0.ordinal()][card1.ordinal()];
     } else {
-      return PAIRS[card1.ordinal][card0.ordinal];
+      return PAIRS[card1.ordinal()][card0.ordinal()];
     }
   }
 
