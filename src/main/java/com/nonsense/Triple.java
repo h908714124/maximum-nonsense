@@ -2,8 +2,6 @@ package com.nonsense;
 
 import java.util.stream.Stream;
 
-import static com.nonsense.Card.allCards;
-
 final class Triple {
 
   private static final Triple[][] TRIPLES = allTriples();
@@ -13,7 +11,7 @@ final class Triple {
     Stream<Pair> pairs = Pair.getAllPairs();
     pairs.forEach(pair -> {
       triples[pair.ordinal] = new Triple[81];
-      for (Card card : allCards()) {
+      for (Card card : Card.values()) {
         triples[pair.ordinal][card.ordinal()] = new Triple(pair, card);
       }
     });

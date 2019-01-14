@@ -2,8 +2,7 @@ package com.nonsense;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -48,8 +47,8 @@ class Deck {
     return !set.isPresent();
   }
 
-  static Optional<Card> expand(List<Card> cards) {
-    for (Card candidate : Card.allCards()) {
+  static Optional<Card> expand(Collection<Card> cards) {
+    for (Card candidate : Card.values()) {
       if (cards.contains(candidate)) {
         continue;
       }
@@ -60,16 +59,14 @@ class Deck {
     return Optional.empty();
   }
 
-  static Set<Card> randomCards(int n) {
-    Set<Card> cards = new HashSet<>(n);
-    while (cards.size() < n) {
-      cards.add(Card.randomCard());
-    }
-    return cards;
+  static boolean isNonExtensible(Collection<Card> cards) {
+    EnumSet<Card> set = EnumSet.noneOf(Card.class);
+    allPairs(cards).forEach(pair -> set.add(pair.setCard));
+    return set.size() == 81 - cards.size();
   }
 
-  static List<Card> randomIndependentCards(int n) {
-    List<Card> cards = new ArrayList<>(n);
+  static Set<Card> randomIndependentCards(int n) {
+    Set<Card> cards = EnumSet.noneOf(Card.class);
     int breaker = 1000000;
     while (breaker > 0 && cards.size() < n) {
       breaker--;
@@ -82,7 +79,7 @@ class Deck {
       }
     }
     if (cards.size() < n) {
-      return Collections.emptyList();
+      return EnumSet.noneOf(Card.class);
     }
     return cards;
   }

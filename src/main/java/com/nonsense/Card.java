@@ -1,7 +1,6 @@
 package com.nonsense;
 
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -116,27 +115,6 @@ enum Card {
     return colorMap;
   }
 
-  static Iterable<Card> allCards() {
-    Card[] values = values();
-    Iterator<Card> ir = new Iterator<>() {
-
-      int i;
-
-      @Override
-      public boolean hasNext() {
-        return i < 81;
-      }
-
-      @Override
-      public Card next() {
-        Card card = values[i];
-        i++;
-        return card;
-      }
-    };
-    return () -> ir;
-  }
-
   final Color color;
   final Shape shape;
   final Shading shading;
@@ -158,20 +136,7 @@ enum Card {
   }
 
   static Card randomCard() {
-    Color[] colors = Color.values();
-    Shape[] shapes = Shape.values();
-    Shading[] shadings = Shading.values();
-    Number[] numbers = Number.values();
-    ThreadLocalRandom r = ThreadLocalRandom.current();
-    int i = r.nextInt(3);
-    int j = r.nextInt(3);
-    int k = r.nextInt(3);
-    int l = r.nextInt(3);
-    Color color = colors[i];
-    Shape shape = shapes[j];
-    Shading shading = shadings[k];
-    Number number = numbers[l];
-    return get(color, shape, shading, number);
+    return values()[ThreadLocalRandom.current().nextInt(81)];
   }
 
   static Card green1(Shape shape, Shading shading) {

@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.nonsense.Card.get;
 import static com.nonsense.Card.green1;
@@ -200,7 +201,7 @@ public class DeckTest {
   @Test
   public void testFind18IndependentCards() {
     for (int i = 0; i < 10000; i++) {
-      List<Card> cards = Deck.randomIndependentCards(17);
+      Set<Card> cards = Deck.randomIndependentCards(17);
       if (cards.isEmpty()) {
         continue;
       }
@@ -269,15 +270,6 @@ public class DeckTest {
   }
 
   @Test
-  public void testAllCardsSorted() {
-    int[] previous = new int[]{-1};
-    Card.allCards().forEach(card -> {
-      assertTrue(card.ordinal() > previous[0]);
-      previous[0] = card.ordinal();
-    });
-  }
-
-  @Test
   public void testAllPairsSorted() {
     int[] previous = new int[]{-1};
     Pair.getAllPairs().forEach(pair -> {
@@ -285,5 +277,22 @@ public class DeckTest {
       previous[0] = pair.ordinal;
     });
     assertEquals(3240, Pair.getAllPairs().count());
+  }
+
+  @Test
+  public void testFindNonExtensibleHand() {
+    for (int i = 0; i < 5000000; i++) {
+      Set<Card> cards = Deck.randomIndependentCards(15);
+      if (cards.isEmpty()) {
+        continue;
+      }
+      boolean cap = Deck.isNonExtensible(cards);
+      if (cap) {
+        for (Card card : cards) {
+          System.out.println(card);
+        }
+        break;
+      }
+    }
   }
 }
