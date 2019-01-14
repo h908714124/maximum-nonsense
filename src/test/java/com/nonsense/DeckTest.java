@@ -3,6 +3,7 @@ package com.nonsense;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -191,11 +192,11 @@ public class DeckTest {
         green2(SQUIGGLES, OUTLINED),
         purple1(SQUIGGLES, SOLID),
         red2(OVALS, OUTLINED));
-    assertTrue(Deck.isIndependent(cards));
-    Optional<Card> extraCard = Deck.expand(cards);
+    assertTrue(Deck.isIndependent(EnumSet.copyOf(cards)));
+    Optional<Card> extraCard = Deck.expand(EnumSet.copyOf(cards));
     assertTrue(extraCard.isPresent());
-    assertTrue(Deck.isIndependent(cards, extraCard.get()));
-    assertFalse(Deck.isIndependent(cards, purple3(SQUIGGLES, STRIPED)));
+    assertTrue(Deck.isIndependent(EnumSet.copyOf(cards), extraCard.get()));
+    assertFalse(Deck.isIndependent(EnumSet.copyOf(cards), purple3(SQUIGGLES, STRIPED)));
   }
 
   @Test
@@ -205,7 +206,7 @@ public class DeckTest {
       if (cards.isEmpty()) {
         continue;
       }
-      Optional<Card> extraCard = Deck.expand(cards);
+      Optional<Card> extraCard = Deck.expand(EnumSet.copyOf(cards));
       if (extraCard.isPresent()) {
         for (Card card : cards) {
           System.out.println(card);
@@ -239,7 +240,7 @@ public class DeckTest {
         get(GREEN, DIAMONDS, SOLID, THREE),
         get(GREEN, DIAMONDS, STRIPED, THREE));
     assertEquals(19, cards.size());
-    assertTrue(Deck.isIndependent(cards));
+    assertTrue(Deck.isIndependent(EnumSet.copyOf(cards)));
   }
 
   @Test
@@ -266,7 +267,7 @@ public class DeckTest {
         get(GREEN, DIAMONDS, SOLID, THREE),
         get(GREEN, DIAMONDS, OUTLINED, THREE));
     assertEquals(20, cards.size());
-    assertTrue(Deck.isIndependent(cards));
+    assertTrue(Deck.isIndependent(EnumSet.copyOf(cards)));
   }
 
   @Test
@@ -280,7 +281,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testFindNonExtensibleHand() {
+  public void testFind15NonExtensible() {
     for (int i = 0; i < 5000000; i++) {
       Set<Card> cards = Deck.randomIndependentCards(15);
       if (cards.isEmpty()) {

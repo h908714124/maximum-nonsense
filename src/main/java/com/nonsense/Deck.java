@@ -1,12 +1,9 @@
 package com.nonsense;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -20,7 +17,7 @@ class Deck {
     return StreamSupport.stream(it.spliterator(), false);
   }
 
-  static Stream<Pair> allPairs(Collection<Card> cards) {
+  private static Stream<Pair> allPairs(Collection<Card> cards) {
     if (cards.size() < 2) {
       return Stream.empty();
     }
@@ -28,26 +25,26 @@ class Deck {
     return StreamSupport.stream(it.spliterator(), false);
   }
 
-  static boolean isIndependent(Collection<Card> cards) {
+  static boolean isIndependent(EnumSet<Card> cards) {
     Iterator<Card> it = cards.iterator();
     if (!it.hasNext()) {
       return true;
     }
     Card first = it.next();
-    List<Card> rest = new ArrayList<>(cards.size() - 1);
+    EnumSet<Card> rest = EnumSet.noneOf(Card.class);
     while (it.hasNext()) {
       rest.add(it.next());
     }
     return isIndependent(rest, first);
   }
 
-  static boolean isIndependent(Collection<Card> cards, Card extraCard) {
+  static boolean isIndependent(EnumSet<Card> cards, Card extraCard) {
     Stream<Pair> pairs = allPairs(cards);
     Optional<Pair> set = pairs.filter(pair -> pair.isSet(extraCard)).findFirst();
-    return !set.isPresent();
+    return set.isEmpty();
   }
 
-  static Optional<Card> expand(Collection<Card> cards) {
+  static Optional<Card> expand(EnumSet<Card> cards) {
     for (Card candidate : Card.values()) {
       if (cards.contains(candidate)) {
         continue;
@@ -65,8 +62,8 @@ class Deck {
     return set.size() == 81 - cards.size();
   }
 
-  static Set<Card> randomIndependentCards(int n) {
-    Set<Card> cards = EnumSet.noneOf(Card.class);
+  static EnumSet<Card> randomIndependentCards(int n) {
+    EnumSet<Card> cards = EnumSet.noneOf(Card.class);
     int breaker = 1000000;
     while (breaker > 0 && cards.size() < n) {
       breaker--;
