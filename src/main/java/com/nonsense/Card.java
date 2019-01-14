@@ -174,14 +174,4 @@ enum Card {
   static Card purple3(Shape shape, Shading pattern) {
     return get(PURPLE, shape, pattern, THREE);
   }
-
-  @Override
-  public String toString() {
-    return "(" +
-        number +
-        "," + shading +
-        "," + color +
-        "," + shape +
-        ')';
-  }
 }

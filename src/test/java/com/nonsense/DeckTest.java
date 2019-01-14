@@ -283,7 +283,7 @@ public class DeckTest {
   @Test
   public void testFind15NonExtensible() {
     for (int i = 0; i < 5000000; i++) {
-      Set<Card> cards = Deck.randomIndependentCards(15);
+      EnumSet<Card> cards = Deck.randomIndependentCards(15);
       if (cards.isEmpty()) {
         continue;
       }
@@ -292,6 +292,7 @@ public class DeckTest {
         for (Card card : cards) {
           System.out.println(card);
         }
+        Grid.print9x9(cards);
         break;
       }
     }
