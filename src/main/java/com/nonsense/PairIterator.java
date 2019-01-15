@@ -9,9 +9,9 @@ class PairIterator implements Iterator<Pair> {
 
   private final List<Card> cards;
 
-  int i = 0, j = 1;
+  private int i = 0, j = 1;
 
-  PairIterator(List<Card> cards) {
+  private PairIterator(List<Card> cards) {
     this.cards = cards;
   }
 

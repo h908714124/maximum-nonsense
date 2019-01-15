@@ -41,7 +41,7 @@ class Deck {
   static boolean isIndependent(EnumSet<Card> cards, Card extraCard) {
     Stream<Pair> pairs = allPairs(cards);
     Optional<Pair> set = pairs.filter(pair -> pair.isSet(extraCard)).findFirst();
-    return set.isEmpty();
+    return !set.isPresent();
   }
 
   static Optional<Card> expand(EnumSet<Card> cards) {

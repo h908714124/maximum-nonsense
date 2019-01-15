@@ -12,16 +12,16 @@ class Grid {
         System.out.print(" ");
       }
       int i = card.ordinal();
-      int row = i / 9;
       int column = i % 9;
-      if (column == 3 || column == 6) {
+      if (column == 2 || column == 5) {
         System.out.print("|");
       }
-      if (column == 0) {
+      if (column == 8) {
         System.out.println();
-      }
-      if (column == 0 && (row == 3 || row == 6)) {
-        System.out.println("-----------");
+        int row = i / 9;
+        if (row == 2 || row == 5) {
+          System.out.println("-----------");
+        }
       }
     }
   }

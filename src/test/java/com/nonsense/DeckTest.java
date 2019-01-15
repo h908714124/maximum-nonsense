@@ -1,6 +1,6 @@
 package com.nonsense;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -30,14 +30,14 @@ import static com.nonsense.Shading.STRIPED;
 import static com.nonsense.Shape.DIAMONDS;
 import static com.nonsense.Shape.OVALS;
 import static com.nonsense.Shape.SQUIGGLES;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DeckTest {
+class DeckTest {
 
   @Test
-  public void testIsSet() {
+  void testIsSet() {
     assertTrue(Triple.get(
         green3(SQUIGGLES, SOLID),
         red2(OVALS, STRIPED),
@@ -45,7 +45,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testAllTriples() {
+  void testAllTriples() {
     assertEquals(1, Deck.allTriples(Arrays.asList(
         green1(SQUIGGLES, SOLID),
         green2(SQUIGGLES, SOLID),
@@ -179,7 +179,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testExpandMore() {
+  void testExpandMore() {
     List<Card> cards = Arrays.asList(
         purple3(DIAMONDS, OUTLINED),
         red2(SQUIGGLES, STRIPED),
@@ -200,7 +200,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testFind18IndependentCards() {
+  void testFind18IndependentCards() {
     for (int i = 0; i < 10000; i++) {
       Set<Card> cards = Deck.randomIndependentCards(17);
       if (cards.isEmpty()) {
@@ -218,7 +218,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testRecord19() {
+  void test19IndependentCards() {
     List<Card> cards = Arrays.asList(
         get(RED, SQUIGGLES, STRIPED, ONE),
         get(RED, SQUIGGLES, OUTLINED, ONE),
@@ -244,7 +244,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testRecord20() {
+  void test20IndependentCards() {
     List<Card> cards = Arrays.asList(
         get(RED, OVALS, STRIPED, ONE),
         get(RED, OVALS, STRIPED, THREE),
@@ -271,7 +271,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testAllPairsSorted() {
+  void testAllPairsSorted() {
     int[] previous = new int[]{-1};
     Pair.getAllPairs().forEach(pair -> {
       assertTrue(pair.ordinal > previous[0]);
@@ -281,7 +281,7 @@ public class DeckTest {
   }
 
   @Test
-  public void testFind15NonExtensible() {
+  void testFind15NonExtensible() {
     for (int i = 0; i < 5000000; i++) {
       EnumSet<Card> cards = Deck.randomIndependentCards(15);
       if (cards.isEmpty()) {

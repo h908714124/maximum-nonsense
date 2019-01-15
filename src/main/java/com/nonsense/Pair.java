@@ -90,7 +90,7 @@ final class Pair {
   final int ordinal;
 
   static Stream<Pair> getAllPairs() {
-    Iterator<Pair> ito = new Iterator<>() {
+    Iterator<Pair> ito = new Iterator<Pair>() {
       int i = 0, j = 1;
 
       @Override
